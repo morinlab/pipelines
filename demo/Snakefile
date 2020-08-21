@@ -6,8 +6,10 @@
 
 import oncopipe as op
 
-SAMPLES = op.load_samples("data/samples.tsv")
-
+SAMPLES = op.load_samples("sc_data/samples.tsv")
+SAMPLES["patient_id"] = SAMPLES["chip_id"]
+SAMPLES["tissue_status"] = "tumour"
+SAMPLES["genome_build"] = "grch38"
 
 ##### REFERENCE_FILES WORKFLOW #####
 
@@ -25,11 +27,7 @@ subworkflow reference_files:
 
 
 # Load module-specific configuration
-configfile: "../modules/star/1.2/config/default.yaml"
-configfile: "../modules/manta/2.2/config/default.yaml"
-configfile: "../modules/sequenza/1.2/config/default.yaml"
-configfile: "../modules/strelka/1.0/config/default.yaml"
-
+configfile: "../modules/cellranger/1.0/config/default.yaml"
 
 # Load project-specific config, which includes the shared 
 # configuration and some module-specific config updates
@@ -47,11 +45,7 @@ config["lcr-modules"]["_shared"]["samples"] = SAMPLES
 
 
 # Load module-specific snakefiles
-
-include: "../modules/star/1.2/star.smk"
-include: "../modules/manta/2.2/manta.smk"
-include: "../modules/sequenza/1.2/sequenza.smk"
-include: "../modules/strelka/1.0/strelka.smk"
+include: "../modules/cellranger/1.0/cellranger.smk"
 
 
 ##### TARGETS ######
@@ -59,7 +53,4 @@ include: "../modules/strelka/1.0/strelka.smk"
 
 rule all:
     input:
-        rules._star_all.input,
-        rules._manta_all.input,
-        rules._sequenza_all.input,
-        rules._strelka_all.input
+        rules._cellranger_all.input
