@@ -1,0 +1,35 @@
+lcr-modules:
+    
+    shimmer:
+
+        # TODO: Update the list of available wildcards, if applicable
+        inputs:
+            # Available wildcards: {seq_type} {genome_build} {sample_id}
+            sample_bam: "__UPDATE__"
+            sample_bai: "__UPDATE__"
+
+
+        scratch_subdirectories: []
+
+        options:
+            minBaseQualityScore: 30
+            fdrcutoff: 0.05
+
+        software:
+            shimmer: "{MODSDIR}/etc/shimmer.pl"
+            printCompCounts: "{MODSDIR}/etc/printCompCounts"
+
+        conda_envs:
+            shimmer: "{MODSDIR}/envs/shimmer.env.yaml"
+            
+        threads:
+            shimmer: 8
+
+        mem_mb:
+            shimmer: 16000
+
+        pairing_config:
+            genome:
+                run_paired_tumours: True
+                run_unpaired_tumours_with: null
+                run_paired_tumours_as_unpaired: False
